@@ -4,6 +4,8 @@ open import Agda.Primitive
 open import Agda.Builtin.Equality
 open import Playground.Types
 open import Playground.Data.Sigma
+open import Playground.Data.Empty
+open import Playground.Neg
 open import Playground.HLevels
 open import Playground.FunExt
 open import Playground.Identity
@@ -82,3 +84,10 @@ module _ (e : FunExt) where
   isPropIsSet i j = funExt2 e (λ _ → _) (λ x y → ∀ p q → p ≡ q) i j
     λ x y → funExt2 e (λ _ → _) (λ p q → p ≡ q) (i x y) (j x y)
       λ p q → isSet→isGroupoid i x y p q (i x y p q) (j x y p q)
+
+isProp⊥ : isProp ⊥
+isProp⊥ ()
+
+module _ (e : FunExt) where
+  isProp¬ : isProp (¬ A)
+  isProp¬ x y = funExt e (λ _ → ⊥) x y λ z → isProp⊥ (x z) (y z)

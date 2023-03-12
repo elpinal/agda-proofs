@@ -25,3 +25,9 @@ ConstOn A = Σ (A → A) WeakConst
 
 PathConstOn : (A : Type ℓ) → Type ℓ
 PathConstOn A = ∀ (x y : A) → ConstOn (x ≡ y)
+
+Stable : (A : Type ℓ) → Type ℓ
+Stable A = ¬ ¬ A → A
+
+Separated : (A : Type ℓ) → Type ℓ
+Separated A = ∀ (x y : A) → Stable (x ≡ y)

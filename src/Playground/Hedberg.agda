@@ -10,8 +10,10 @@ open import Playground.Data.Empty
 open import Playground.Data.Sigma
 open import Playground.Data.Sum
 open import Playground.HLevels
+open import Playground.HLevels.Properties
 open import Playground.Relations
 open import Playground.Identity
+open import Playground.FunExt
 
 private variable
   ℓ : Level
@@ -40,3 +42,21 @@ isDiscrete→isSet disc = PathConstOn→isSet (isDiscrete→PathConstOn disc)
 isSet→PathConstOn : isSet A → PathConstOn A
 isSet→PathConstOn _ _ _ .fst p = p
 isSet→PathConstOn isSetA x y .snd p q = isSetA x y p q
+
+--------------------------------------------------------------------------------
+
+module _ (e : FunExt) where
+  Separated→PathConstOn : Separated A → PathConstOn A
+  Separated→PathConstOn {A = A} sep x y = f , w
+    where
+      ¬¬unit : x ≡ y → ¬ ¬ (x ≡ y)
+      ¬¬unit p k = ⊥-rec (k p)
+
+      f : x ≡ y → x ≡ y
+      f p = sep x y (¬¬unit p)
+
+      w : WeakConst f
+      w p q = ap (sep x y) (isProp¬ e (¬¬unit p) (¬¬unit q))
+
+  Separated→isSet : Separated A → isSet A
+  Separated→isSet sep = PathConstOn→isSet (Separated→PathConstOn sep)
