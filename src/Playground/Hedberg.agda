@@ -58,8 +58,8 @@ isSet→PathConstOn isSetA x y .snd p q = isSetA x y p q
 --------------------------------------------------------------------------------
 
 module _ (e : FunExt) where
-  Separated→PathConstOn : Separated A → PathConstOn A
-  Separated→PathConstOn {A = A} sep x y = f , w
+  isSeparated→PathConstOn : isSeparated A → PathConstOn A
+  isSeparated→PathConstOn {A = A} sep x y = f , w
     where
       ¬¬unit : x ≡ y → ¬ ¬ (x ≡ y)
       ¬¬unit p k = ⊥-rec (k p)
@@ -70,11 +70,11 @@ module _ (e : FunExt) where
       w : WeakConst f
       w p q = ap (sep x y) (isProp¬ e (¬¬unit p) (¬¬unit q))
 
-  Separated→isSet : Separated A → isSet A
-  Separated→isSet sep = PathConstOn→isSet (Separated→PathConstOn sep)
+  isSeparated→isSet : isSeparated A → isSet A
+  isSeparated→isSet sep = PathConstOn→isSet (isSeparated→PathConstOn sep)
 
-  isPropSeparated : isProp (Separated A)
-  isPropSeparated {A = A} f g = funExt2 e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
+  isPropisSeparated : isProp (isSeparated A)
+  isPropisSeparated {A = A} f g = funExt2 e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
     where
       h : ∀ {x y : A} (a b : Stable (x ≡ y)) → a ≡ b
-      h a b = funExt e (λ _ → _ ≡ _) a b λ k → Separated→isSet f _ _ (a k) (b k)
+      h a b = funExt e (λ _ → _ ≡ _) a b λ k → isSeparated→isSet f _ _ (a k) (b k)
