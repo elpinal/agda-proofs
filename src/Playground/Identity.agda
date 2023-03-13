@@ -56,6 +56,16 @@ transportPathCodomain :
   → transport (λ x → a ≡ x) p q ≡ trans q p
 transportPathCodomain refl q = sym (rUnit q)
 
+transportPathDomain :
+  ∀ {a : A} (p : x ≡ y) (q : x ≡ a)
+  → transport (λ x → x ≡ a) p q ≡ trans (sym p) q
+transportPathDomain refl q = sym (lUnit q)
+
+transportPathBoth :
+  ∀ {a : A} (p : x ≡ y) (q : x ≡ x)
+  → transport (λ x → x ≡ x) p q ≡ sym p ∙ q ∙ p
+transportPathBoth refl q = sym (rUnit _ ∙ lUnit q)
+
 infix 4 _∎
 _∎ : (x : A) → x ≡ x
 x ∎ = refl
