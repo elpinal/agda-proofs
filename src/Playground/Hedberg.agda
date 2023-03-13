@@ -72,3 +72,9 @@ module _ (e : FunExt) where
 
   Separated→isSet : Separated A → isSet A
   Separated→isSet sep = PathConstOn→isSet (Separated→PathConstOn sep)
+
+  isPropSeparated : isProp (Separated A)
+  isPropSeparated {A = A} f g = funExt2 e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
+    where
+      h : ∀ {x y : A} (a b : Stable (x ≡ y)) → a ≡ b
+      h a b = funExt e (λ _ → _ ≡ _) a b λ k → Separated→isSet f _ _ (a k) (b k)
