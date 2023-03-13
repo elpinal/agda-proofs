@@ -39,6 +39,18 @@ isDiscrete→isSet disc = PathConstOn→isSet (isDiscrete→PathConstOn disc)
 
 --------------------------------------------------------------------------------
 
+module _ (e : FunExt) where
+  isPropIsDiscrete : isProp (isDiscrete A)
+  isPropIsDiscrete {A = A} f g = funExt2 e (λ _ → _) (λ x z → Decidable (x ≡ z)) f g λ x y → h (f x y) (g x y)
+    where
+      h : ∀ {x y : A} (a b : Decidable (x ≡ y)) → a ≡ b
+      h (inl v) (inl w) = ap inl (isDiscrete→isSet f _ _ v w)
+      h (inl v) (inr w) = ⊥-rec (w v)
+      h (inr v) (inl w) = ⊥-rec (v w)
+      h (inr v) (inr w) = ap inr (isProp¬ e v w)
+
+--------------------------------------------------------------------------------
+
 isSet→PathConstOn : isSet A → PathConstOn A
 isSet→PathConstOn _ _ _ .fst p = p
 isSet→PathConstOn isSetA x y .snd p q = isSetA x y p q
