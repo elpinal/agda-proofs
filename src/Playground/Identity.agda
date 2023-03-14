@@ -66,6 +66,20 @@ transportPathBoth :
   → transport (λ x → x ≡ x) p q ≡ sym p ∙ q ∙ p
 transportPathBoth refl q = sym (rUnit _ ∙ lUnit q)
 
+transportFlip :
+  ∀ {a b : A} {x : P a} {y : P b}
+  → (p : a ≡ b)
+  → transport P p x ≡ y
+  → x ≡ transport P (sym p) y
+transportFlip refl q = q
+
+transportFlip′ :
+  ∀ {a b : A} {x : P a} {y : P b}
+  → (p : b ≡ a)
+  → x ≡ transport P p y
+  → transport P (sym p) x ≡ y
+transportFlip′ refl q = q
+
 infix 4 _∎
 _∎ : (x : A) → x ≡ x
 x ∎ = refl
