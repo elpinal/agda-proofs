@@ -9,10 +9,11 @@ open import Playground.Neg
 open import Playground.HLevels
 open import Playground.FunExt
 open import Playground.Identity
+open import Playground.Functions
 
 private variable
   ℓ : Level
-  A : Type ℓ
+  A B : Type ℓ
 
 isProp→isSet : isProp A → isSet A
 isProp→isSet {A = A} isPropA a b p q =
@@ -91,3 +92,6 @@ isProp⊥ ()
 module _ (e : FunExt) where
   isProp¬ : isProp (¬ A)
   isProp¬ x y = funExt e (λ _ → ⊥) x y λ z → isProp⊥ (x z) (y z)
+
+isContrRetract : isContr A → B ◁ A → isContr B
+isContrRetract (c , f) (r , (s , rs≡id)) = r c , λ y → ap r (f (s y)) ∙ rs≡id y
