@@ -95,3 +95,6 @@ module _ (e : FunExt) where
 
 isContrRetract : isContr A → B ◁ A → isContr B
 isContrRetract (c , f) (r , (s , rs≡id)) = r c , λ y → ap r (f (s y)) ∙ rs≡id y
+
+isContrΣ≡ : ∀ (x : A) → isContr (Σ A λ y → x ≡ y)
+isContrΣ≡ x = (x , refl) , λ { (y , refl) → refl}
