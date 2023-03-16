@@ -12,7 +12,7 @@ open import Playground.Identity
 open import Playground.Functions
 
 private variable
-  ℓ : Level
+  ℓ ℓ′ : Level
   A B : Type ℓ
 
 isContr→isProp : isContr A → isProp A
@@ -102,5 +102,16 @@ isContrRetract (c , f) (r , (s , rs≡id)) = r c , λ y → ap r (f (s y)) ∙ r
 isContrΣ≡ : ∀ (x : A) → isContr (Σ A λ y → x ≡ y)
 isContrΣ≡ x = (x , refl) , λ { (y , refl) → refl}
 
+--------------------------------------------------------------------------------
+
 IsContrΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
 IsContrΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isContr (P x)) → isContr (∀ x → P x)
+
+IsPropΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
+IsPropΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isProp (P x)) → isProp (∀ x → P x)
+
+IsPropΠ→IsContrΠ : IsPropΠ ℓ ℓ′ → IsContrΠ ℓ ℓ′
+IsPropΠ→IsContrΠ f g = (λ x → g x .fst) , λ y → f (λ x → isContr→isProp (g x)) (λ x → g x .fst) y
+
+FunExt→IsPropΠ : FunExt′ ℓ ℓ′ → IsPropΠ ℓ ℓ′
+FunExt→IsPropΠ e f g h = funExt e (λ z → _) g h λ x → f x (g x) (h x)
