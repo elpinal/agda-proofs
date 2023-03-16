@@ -8,9 +8,10 @@ import Playground.Data.Sum
 import Playground.Data.Sigma
 import Playground.Neg
 import Playground.Identity
-import Playground.Equivalence
 import Playground.Functions
+import Playground.Equivalence
 import Playground.Data.Sigma.Properties
+import Playground.Equivalence.Properties
 import Playground.Homotopy
 import Playground.FunExt
 import Playground.Fibration

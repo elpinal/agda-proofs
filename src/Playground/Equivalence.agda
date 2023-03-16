@@ -10,6 +10,7 @@ open import Playground.Data.Sigma
 private variable
   ℓ : Level
   A B : Type ℓ
+  f : A → B
 
 isEquiv : (f : A → B) → Type (of A ⊔ of B)
 isEquiv {B = B} f = ∀ (y : B) → isContr (fiber f y)
