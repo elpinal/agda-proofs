@@ -5,7 +5,7 @@ open import Agda.Builtin.Equality
 open import Playground.Types
 open import Playground.Identity
 open import Playground.HLevels
-open import Playground.HLevels.Properties
+open import Playground.HLevels.Properties using (isContrRetract)
 open import Playground.Functions
 open import Playground.Equivalence
 open import Playground.Equivalence.Properties

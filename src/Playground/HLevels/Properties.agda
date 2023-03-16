@@ -15,6 +15,9 @@ private variable
   ℓ : Level
   A B : Type ℓ
 
+isContr→isProp : isContr A → isProp A
+isContr→isProp isContrA x y = sym (snd isContrA _) ∙ snd isContrA y
+
 isProp→isSet : isProp A → isSet A
 isProp→isSet {A = A} isPropA a b p q =
   begin

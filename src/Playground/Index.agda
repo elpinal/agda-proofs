@@ -16,4 +16,5 @@ import Playground.Homotopy
 import Playground.FunExt
 import Playground.Fibration
 import Playground.HLevels.Properties
+import Playground.FunExt.Properties
 import Playground.Hedberg
