@@ -22,12 +22,6 @@ private variable
   A B : Type ℓ
   P : A → Type ℓ
 
-IsContrΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
-IsContrΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isContr (P x)) → isContr (∀ x → P x)
-
-FunExt′ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
-FunExt′ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} (f g : (x : A) → P x) → isEquiv (happly f g)
-
 IsContrΠ→FunExt′ : IsContrΠ ℓ ℓ′ → FunExt′ ℓ ℓ′
 IsContrΠ→FunExt′ c {P = P} f = isEquivTotal→isFiberwiseEquiv (happly f) e
   where

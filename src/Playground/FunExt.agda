@@ -14,6 +14,9 @@ private variable
 FunExt : Typeω
 FunExt = ∀ {ℓ ℓ′ : Level} {A : Type ℓ} (B : A → Type ℓ′) (f g : (x : A) → B x) → isEquiv (happly f g)
 
+FunExt′ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
+FunExt′ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} (f g : (x : A) → P x) → isEquiv (happly f g)
+
 module _ (e : FunExt) where
   funExt : ∀ (B : A → Type ℓ) (f g : (x : A) → B x) → (∀ (x : A) → f x ≡ g x) → f ≡ g
   funExt B f g = invFun (e B f g)
