@@ -5,8 +5,10 @@ open import Agda.Builtin.Equality
 open import Playground.Types
 open import Playground.Identity
 open import Playground.HLevels
+open import Playground.HLevels.Properties
 open import Playground.Functions
 open import Playground.Equivalence
+open import Playground.Equivalence.Properties
 open import Playground.Data.Sigma
 open import Playground.Data.Sigma.Properties
 
@@ -35,3 +37,17 @@ isEquivFiberOfFiberwiseMap {x = .a} f (_ , _) .snd (((a , Pa) , refl) , refl) = 
 
 fiberOfTotalMap : ∀ (x : A) (v : Q x) → (f : FiberwiseMap P Q) → fiber (f x) v → fiber (totalMap f) (x , v)
 fiberOfTotalMap _ _ f = invFun (isEquivFiberOfFiberwiseMap f)
+
+module _ {P : A → Type ℓ} {Q : A → Type ℓ′} (f : FiberwiseMap P Q) where
+  isFiberwiseEquiv→isEquivTotal : isFiberwiseEquiv f → isEquiv (totalMap f)
+  isFiberwiseEquiv→isEquivTotal fe (x , v) = isContrRetract (fe x v) r
+    where
+      r : fiber (totalMap f) (x , v) ◁ fiber (f x) v
+      r = fiberOfTotalMap _ _ f , isEquiv→HasSectionInvFun (isEquivFiberOfFiberwiseMap f)
+
+  isEquivTotal→isFiberwiseEquiv : isEquiv (totalMap f) → isFiberwiseEquiv f
+  isEquivTotal→isFiberwiseEquiv e x v = isContrRetract (e (x , v)) r
+    where
+      r : fiber (f x) v ◁ fiber (totalMap f) (x , v)
+      r = fiberOfFiberwiseMap _ _ f , isEquiv→HasSection (isEquivFiberOfFiberwiseMap f)
+
