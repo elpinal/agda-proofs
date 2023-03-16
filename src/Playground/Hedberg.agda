@@ -39,15 +39,15 @@ isDiscrete→isSet disc = PathConstOn→isSet (isDiscrete→PathConstOn disc)
 
 --------------------------------------------------------------------------------
 
-module _ (e : FunExt) where
+module _ (e0 : FunExt′ (of A) lzero) (e : FunExt′ (of A) (of A)) where
   isPropIsDiscrete : isProp (isDiscrete A)
-  isPropIsDiscrete {A = A} f g = funExt2 e (λ _ → _) (λ x z → Decidable (x ≡ z)) f g λ x y → h (f x y) (g x y)
+  isPropIsDiscrete f g = funExt2′ e (λ _ → _) (λ x z → Decidable (x ≡ z)) f g λ x y → h (f x y) (g x y)
     where
       h : ∀ {x y : A} (a b : Decidable (x ≡ y)) → a ≡ b
       h (inl v) (inl w) = ap inl (isDiscrete→isSet f _ _ v w)
       h (inl v) (inr w) = ⊥-rec (w v)
       h (inr v) (inl w) = ⊥-rec (v w)
-      h (inr v) (inr w) = ap inr (isProp¬ e v w)
+      h (inr v) (inr w) = ap inr (isProp¬ e0 v w)
 
 --------------------------------------------------------------------------------
 
@@ -57,9 +57,9 @@ isSet→PathConstOn isSetA x y .snd p q = isSetA x y p q
 
 --------------------------------------------------------------------------------
 
-module _ (e : FunExt) where
+module _ (e0 : FunExt′ (of A) lzero) (e : FunExt′ (of A) (of A)) where
   isSeparated→PathConstOn : isSeparated A → PathConstOn A
-  isSeparated→PathConstOn {A = A} sep x y = f , w
+  isSeparated→PathConstOn sep x y = f , w
     where
       ¬¬unit : x ≡ y → ¬ ¬ (x ≡ y)
       ¬¬unit p k = ⊥-rec (k p)
@@ -68,13 +68,13 @@ module _ (e : FunExt) where
       f p = sep x y (¬¬unit p)
 
       w : WeakConst f
-      w p q = ap (sep x y) (isProp¬ e (¬¬unit p) (¬¬unit q))
+      w p q = ap (sep x y) (isProp¬ e0 (¬¬unit p) (¬¬unit q))
 
   isSeparated→isSet : isSeparated A → isSet A
   isSeparated→isSet sep = PathConstOn→isSet (isSeparated→PathConstOn sep)
 
   isPropisSeparated : isProp (isSeparated A)
-  isPropisSeparated {A = A} f g = funExt2 e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
+  isPropisSeparated f g = funExt2′ e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
     where
       h : ∀ {x y : A} (a b : Stable (x ≡ y)) → a ≡ b
       h a b = funExt e (λ _ → _ ≡ _) a b λ k → isSeparated→isSet f _ _ (a k) (b k)

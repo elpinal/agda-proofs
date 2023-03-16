@@ -78,21 +78,21 @@ isSet→isGroupoid {A = A} isSetA a b p q r s =
         sym (g y) ∙ g z
       ∎
 
-module _ (e : FunExt) where
+module _ (e : FunExt′ (of A) (of A)) where
   isPropIsProp : isProp (isProp A)
   isPropIsProp i j =
-    funExt2 e (λ _ → _) (λ x y → x ≡ y) i j
+    funExt2′ e (λ _ → _) (λ x y → x ≡ y) i j
       λ x y → isProp→isSet i x y (i x y) (j x y)
 
   isPropIsSet : isProp (isSet A)
-  isPropIsSet i j = funExt2 e (λ _ → _) (λ x y → ∀ p q → p ≡ q) i j
-    λ x y → funExt2 e (λ _ → _) (λ p q → p ≡ q) (i x y) (j x y)
+  isPropIsSet i j = funExt2′ e (λ _ → _) (λ x y → ∀ p q → p ≡ q) i j
+    λ x y → funExt2′ e (λ _ → _) (λ p q → p ≡ q) (i x y) (j x y)
       λ p q → isSet→isGroupoid i x y p q (i x y p q) (j x y p q)
 
 isProp⊥ : isProp ⊥
 isProp⊥ ()
 
-module _ (e : FunExt) where
+module _ (e : FunExt′ (of A) lzero) where
   isProp¬ : isProp (¬ A)
   isProp¬ x y = funExt e (λ _ → ⊥) x y λ z → isProp⊥ (x z) (y z)
 

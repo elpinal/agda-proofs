@@ -17,16 +17,29 @@ FunExt = ∀ {ℓ ℓ′ : Level} {A : Type ℓ} (B : A → Type ℓ′) (f g : 
 FunExt′ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
 FunExt′ ℓ ℓ′ = ∀ {A : Type ℓ} (P : A → Type ℓ′) (f g : (x : A) → P x) → isEquiv (happly f g)
 
-module _ (e : FunExt) where
-  funExt : ∀ (B : A → Type ℓ) (f g : (x : A) → B x) → (∀ (x : A) → f x ≡ g x) → f ≡ g
+module _ (e : FunExt′ ℓ ℓ′) where
+  funExt : ∀ {A : Type ℓ} (B : A → Type ℓ′) (f g : (x : A) → B x) → (∀ (x : A) → f x ≡ g x) → f ≡ g
   funExt B f g = invFun (e B f g)
 
+module _ (e : FunExt′ ℓ ℓ) where
+  -- This definition requires A, B, and C to live in the same universe.
+  funExt2′ :
+    ∀ {A : Type ℓ} (B : A → Type ℓ) (C : (x : A) → B x → Type ℓ)
+      (f g : (x : A) → (y : B x) → C x y)
+    → (∀ (x : A) (y : B x) → f x y ≡ g x y)
+    → f ≡ g
+  funExt2′ B C f g k =
+    funExt e (λ x → ∀ y → C x y) f g
+      λ x → funExt e (λ y → C x y) (f x) (g x)
+        λ y → k x y
+
+module _ (e : FunExt) where
   funExt2 :
     ∀ (B : A → Type ℓ) (C : (x : A) → B x → Type ℓ′)
       (f g : (x : A) → (y : B x) → C x y)
     → (∀ (x : A) (y : B x) → f x y ≡ g x y)
     → f ≡ g
   funExt2 B C f g k =
-    funExt (λ x → ∀ y → C x y) f g
-      λ x → funExt (λ y → C x y) (f x) (g x)
+    funExt e (λ x → ∀ y → C x y) f g
+      λ x → funExt e (λ y → C x y) (f x) (g x)
         λ y → k x y
