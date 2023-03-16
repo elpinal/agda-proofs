@@ -23,7 +23,7 @@ private variable
   P : A → Type ℓ
 
 IsContrΠ→FunExt′ : IsContrΠ ℓ ℓ′ → FunExt′ ℓ ℓ′
-IsContrΠ→FunExt′ c {P = P} f = isEquivTotal→isFiberwiseEquiv (happly f) e
+IsContrΠ→FunExt′ c P f = isEquivTotal→isFiberwiseEquiv (happly f) e
   where
     isContrDom : isContr (Σ (∀ x → P x) λ g → f ≡ g)
     isContrDom = isContrΣ≡ f
