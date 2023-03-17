@@ -11,35 +11,38 @@ private variable
   A B : Type ℓ
   C : A → Type ℓ
 
-FunExt : Typeω
-FunExt = ∀ {ℓ ℓ′ : Level} {A : Type ℓ} (B : A → Type ℓ′) (f g : (x : A) → B x) → isEquiv (happly f g)
+FunExtForSpecificTypes : ∀ (A : Type ℓ) (B : A → Type ℓ′) → Type (ℓ ⊔ ℓ′)
+FunExtForSpecificTypes A B = ∀ (f g : (x : A) → B x) → isEquiv (happly f g)
 
-FunExt′ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
-FunExt′ ℓ ℓ′ = ∀ {A : Type ℓ} (P : A → Type ℓ′) (f g : (x : A) → P x) → isEquiv (happly f g)
+FunExtForAllSmallTypes : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
+FunExtForAllSmallTypes ℓ ℓ′ = ∀ {A : Type ℓ} (B : A → Type ℓ′) → FunExtForSpecificTypes A B
 
-module _ (e : FunExt′ ℓ ℓ′) where
-  funExt : ∀ {A : Type ℓ} (B : A → Type ℓ′) (f g : (x : A) → B x) → (∀ (x : A) → f x ≡ g x) → f ≡ g
-  funExt B f g = invFun (e B f g)
+FunExtForAllTypes : Typeω
+FunExtForAllTypes = ∀ {ℓ ℓ′ : Level} → FunExtForAllSmallTypes ℓ ℓ′
 
-module _ (e : FunExt′ ℓ ℓ) where
+module _ (e : FunExtForSpecificTypes A C) where
+  funExt : (f g : (x : A) → C x) → (∀ (x : A) → f x ≡ g x) → f ≡ g
+  funExt f g = invFun (e f g)
+
+module _ (e : FunExtForAllSmallTypes ℓ ℓ) where
   -- This definition requires A, B, and C to live in the same universe.
   funExt2′ :
     ∀ {A : Type ℓ} (B : A → Type ℓ) (C : (x : A) → B x → Type ℓ)
       (f g : (x : A) → (y : B x) → C x y)
     → (∀ (x : A) (y : B x) → f x y ≡ g x y)
     → f ≡ g
-  funExt2′ B C f g k =
-    funExt e (λ x → ∀ y → C x y) f g
-      λ x → funExt e (λ y → C x y) (f x) (g x)
+  funExt2′ {A = A} B C f g k =
+    funExt (e (λ x → ∀ y → C x y)) f g
+      λ x → funExt (e (λ y → C x y)) (f x) (g x)
         λ y → k x y
 
-module _ (e : FunExt) where
+module _ (e : FunExtForAllTypes) where
   funExt2 :
     ∀ (B : A → Type ℓ) (C : (x : A) → B x → Type ℓ′)
       (f g : (x : A) → (y : B x) → C x y)
     → (∀ (x : A) (y : B x) → f x y ≡ g x y)
     → f ≡ g
   funExt2 B C f g k =
-    funExt e (λ x → ∀ y → C x y) f g
-      λ x → funExt e (λ y → C x y) (f x) (g x)
+    funExt (e (λ x → ∀ y → C x y)) f g
+      λ x → funExt (e (λ y → C x y)) (f x) (g x)
         λ y → k x y

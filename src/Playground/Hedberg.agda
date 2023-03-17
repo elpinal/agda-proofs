@@ -39,7 +39,7 @@ isDiscrete→isSet disc = PathConstOn→isSet (isDiscrete→PathConstOn disc)
 
 --------------------------------------------------------------------------------
 
-module _ (e0 : FunExt′ (of A) lzero) (e : FunExt′ (of A) (of A)) where
+module _ (e0 : ∀ {x y : A} → FunExtForSpecificTypes (x ≡ y) (λ _ → ⊥)) (e : FunExtForAllSmallTypes (of A) (of A)) where
   isPropIsDiscrete : isProp (isDiscrete A)
   isPropIsDiscrete f g = funExt2′ e (λ _ → _) (λ x z → Decidable (x ≡ z)) f g λ x y → h (f x y) (g x y)
     where
@@ -57,7 +57,7 @@ isSet→PathConstOn isSetA x y .snd p q = isSetA x y p q
 
 --------------------------------------------------------------------------------
 
-module _ (e0 : FunExt′ (of A) lzero) (e : FunExt′ (of A) (of A)) where
+module _ (e0 : ∀ {x y : A} → FunExtForSpecificTypes (¬ (x ≡ y)) (λ _ → ⊥)) (e : FunExtForAllSmallTypes (of A) (of A)) where
   isSeparated→PathConstOn : isSeparated A → PathConstOn A
   isSeparated→PathConstOn sep x y = f , w
     where
@@ -77,4 +77,4 @@ module _ (e0 : FunExt′ (of A) lzero) (e : FunExt′ (of A) (of A)) where
   isPropisSeparated f g = funExt2′ e (λ _ → _) (λ x z → Stable (x ≡ z)) f g λ x y → h (f x y) (g x y)
     where
       h : ∀ {x y : A} (a b : Stable (x ≡ y)) → a ≡ b
-      h a b = funExt e (λ _ → _ ≡ _) a b λ k → isSeparated→isSet f _ _ (a k) (b k)
+      h a b = funExt (e (λ _ → _ ≡ _)) a b λ k → isSeparated→isSet f _ _ (a k) (b k)

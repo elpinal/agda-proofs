@@ -78,7 +78,7 @@ isSet→isGroupoid {A = A} isSetA a b p q r s =
         sym (g y) ∙ g z
       ∎
 
-module _ (e : FunExt′ (of A) (of A)) where
+module _ (e : FunExtForAllSmallTypes (of A) (of A)) where
   isPropIsProp : isProp (isProp A)
   isPropIsProp i j =
     funExt2′ e (λ _ → _) (λ x y → x ≡ y) i j
@@ -92,9 +92,9 @@ module _ (e : FunExt′ (of A) (of A)) where
 isProp⊥ : isProp ⊥
 isProp⊥ ()
 
-module _ (e : FunExt′ (of A) lzero) where
+module _ (e : FunExtForSpecificTypes A (λ _ → ⊥)) where
   isProp¬ : isProp (¬ A)
-  isProp¬ x y = funExt e (λ _ → ⊥) x y λ z → isProp⊥ (x z) (y z)
+  isProp¬ x y = funExt e x y λ z → isProp⊥ (x z) (y z)
 
 isContrRetract : isContr A → B ◁ A → isContr B
 isContrRetract (c , f) (r , (s , rs≡id)) = r c , λ y → ap r (f (s y)) ∙ rs≡id y
@@ -113,5 +113,5 @@ IsPropΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → 
 IsPropΠ→IsContrΠ : IsPropΠ ℓ ℓ′ → IsContrΠ ℓ ℓ′
 IsPropΠ→IsContrΠ f g = (λ x → g x .fst) , λ y → f (λ x → isContr→isProp (g x)) (λ x → g x .fst) y
 
-FunExt→IsPropΠ : FunExt′ ℓ ℓ′ → IsPropΠ ℓ ℓ′
-FunExt→IsPropΠ e f g h = funExt e (λ z → _) g h λ x → f x (g x) (h x)
+FunExt→IsPropΠ : FunExtForAllSmallTypes ℓ ℓ′ → IsPropΠ ℓ ℓ′
+FunExt→IsPropΠ e f g h = funExt (e (λ z → _)) g h λ x → f x (g x) (h x)
