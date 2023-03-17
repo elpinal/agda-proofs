@@ -104,6 +104,7 @@ isContrΣ≡ x = (x , refl) , λ { (y , refl) → refl}
 
 --------------------------------------------------------------------------------
 
+-- The weak function extensionality principle.
 IsContrΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
 IsContrΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isContr (P x)) → isContr (∀ x → P x)
 
