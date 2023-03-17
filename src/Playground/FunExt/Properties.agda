@@ -22,8 +22,8 @@ private variable
   A B : Type ℓ
   P : A → Type ℓ
 
-IsContrΠ→FunExtForAllSmallTypes : IsContrΠ ℓ ℓ′ → FunExtForAllSmallTypes ℓ ℓ′
-IsContrΠ→FunExtForAllSmallTypes c P f = isEquivTotal→isFiberwiseEquiv (happly f) e
+IsContrΠ→FunExt : IsContrΠ ℓ ℓ′ → FunExtForAllSmallTypes ℓ ℓ′
+IsContrΠ→FunExt c P f = isEquivTotal→isFiberwiseEquiv (happly f) e
   where
     isContrDom : isContr (Σ (∀ x → P x) λ g → f ≡ g)
     isContrDom = isContrΣ≡ f
