@@ -39,3 +39,6 @@ module _ {w w′ : Σ A B} where
 Π-distrib-Σ (f , g) .fst .fst x = f x , g x
 Π-distrib-Σ (f , g) .fst .snd = PathΣ refl refl
 Π-distrib-Σ _ .snd (h , refl) = refl
+
+isPropΣ : isProp A → (∀ x → isProp (B x)) → isProp (Σ A B)
+isPropΣ isPropA isPropB (x1 , y1) (x2 , y2) = PathΣ (isPropA x1 x2) (isPropB x2 _ y2)

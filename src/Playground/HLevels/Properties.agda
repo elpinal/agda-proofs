@@ -102,6 +102,9 @@ isContrRetract (c , f) (r , (s , rs≡id)) = r c , λ y → ap r (f (s y)) ∙ r
 isContrΣ≡ : ∀ (x : A) → isContr (Σ A λ y → x ≡ y)
 isContrΣ≡ x = (x , refl) , λ { (y , refl) → refl}
 
+isPropRetract : isProp A → B ◁ A → isProp B
+isPropRetract f (r , (s , rs≡id)) x y = sym (rs≡id x) ∙ ap r (f (s x) (s y)) ∙ rs≡id y
+
 --------------------------------------------------------------------------------
 
 -- The weak function extensionality principle.

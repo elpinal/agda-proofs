@@ -18,3 +18,6 @@ import Playground.Fibration
 import Playground.HLevels.Properties
 import Playground.FunExt.Properties
 import Playground.Hedberg
+import Playground.Subuniverses
+import Playground.PropUnivalence
+import Playground.Subuniverses.Properties
