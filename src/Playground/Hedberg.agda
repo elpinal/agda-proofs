@@ -78,3 +78,20 @@ module _ (e0 : ∀ {x y : A} → FunExtForSpecificTypes (¬ (x ≡ y)) (λ _ →
     where
       h : ∀ {x y : A} (a b : Stable (x ≡ y)) → a ≡ b
       h a b = funExt (e (λ _ → _ ≡ _)) a b λ k → isSeparated→isSet f _ _ (a k) (b k)
+
+--------------------------------------------------------------------------------
+
+-- The local variant of PathConstOn→isSet, also called Hedberg’s Lemma in Tom de Jong′s thesis.
+Local-PathConstOn→isSet : ∀ (x₀ : A) → (∀ y → ConstOn (x₀ ≡ y)) → (∀ y → isProp (x₀ ≡ y))
+Local-PathConstOn→isSet x₀ c y p q = trans (transport (P p) (c y .snd p q) (f p)) (sym (f q))
+  where
+    P : x₀ ≡ y → x₀ ≡ y → Type _
+    P r s = r ≡ trans (sym (c x₀ .fst refl)) s
+
+    f : ∀ (r : x₀ ≡ y) → P r (c y .fst r)
+    f r with r
+    ... | refl = sym (lInv (c x₀ .fst refl))
+
+-- Local-PathConstOn→isSet implies PathConstOn→isSet.
+_ : PathConstOn A → isSet A
+_ = λ c x → Local-PathConstOn→isSet x (c x)
