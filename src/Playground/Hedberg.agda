@@ -31,8 +31,7 @@ PathConstOn→isSet c x y p q = trans (transport (P p) (c x y .snd p q) (f p)) (
     P r s = r ≡ trans (sym (c x x .fst refl)) s
 
     f : ∀ (r : x ≡ y) → P r (c x y .fst r)
-    f r with r
-    ... | refl = sym (lInv (c x x .fst refl))
+    f refl = sym (lInv (c x x .fst refl))
 
 isDiscrete→isSet : isDiscrete A → isSet A
 isDiscrete→isSet disc = PathConstOn→isSet (isDiscrete→PathConstOn disc)
