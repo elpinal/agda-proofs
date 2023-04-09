@@ -24,6 +24,9 @@ private
 _∈_ : ∀ (x : A) (S : 𝒫 A ℓ) → Type ℓ
 x ∈ S = S x .fst
 
+isProp∈ : ∀ x (S : 𝒫 A ℓ) → isProp (x ∈ S)
+isProp∈ x S = S x .snd
+
 module _
   (e : FunExtForAllSmallTypes ℓ ℓ)
   (e′ : FunExtForAllSmallTypes (of A) (lsuc ℓ))
