@@ -114,6 +114,9 @@ IsContrΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x →
 IsPropΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
 IsPropΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isProp (P x)) → isProp (∀ x → P x)
 
+IsSetΠ : ∀ ℓ ℓ′ → Type (lsuc (ℓ ⊔ ℓ′))
+IsSetΠ ℓ ℓ′ = ∀ {A : Type ℓ} {P : A → Type ℓ′} → (∀ x → isSet (P x)) → isSet (∀ x → P x)
+
 IsPropΠ→IsContrΠ : IsPropΠ ℓ ℓ′ → IsContrΠ ℓ ℓ′
 IsPropΠ→IsContrΠ f g = (λ x → g x .fst) , λ y → f (λ x → isContr→isProp (g x)) (λ x → g x .fst) y
 

@@ -21,3 +21,4 @@ import Playground.Hedberg
 import Playground.Subuniverses
 import Playground.PropUnivalence
 import Playground.Subuniverses.Properties
+import Playground.Powerset

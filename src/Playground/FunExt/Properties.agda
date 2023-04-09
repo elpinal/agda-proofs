@@ -33,3 +33,9 @@ IsContrΠ→FunExt c P f = isEquivTotal→isFiberwiseEquiv (happly f) e
 
     e : isEquiv {A = Σ (∀ x → P x) λ g → f ≡ g} {B = Σ (∀ x → P x) λ g → f ~ g} (totalMap (happly f))
     e y = isContr→isEquiv isContrDom isContrCod (totalMap (happly f)) y
+
+FunExt→IsSetΠ : FunExtForAllSmallTypes ℓ ℓ′ → IsSetΠ ℓ ℓ′
+FunExt→IsSetΠ e f g h =
+  isPropRetract
+    (FunExt→IsPropΠ e λ x → f x (g x) (h x))
+    (funExt (e _) g h , isEquiv→HasSectionInvFun (e _ g h))
